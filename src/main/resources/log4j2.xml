@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration status="WARN">
+	<appenders>
+		<!-- <JDBC name="postgresql" tableName="logs"> -->
+		<!-- <ConnectionFactory -->
+		<!-- class="bank.connection.PostgresAWSConnection" method="getConnection" 
+			/> -->
+		<!-- <Column name="ID" pattern="%u"/> -->
+		<!-- <Column name="entry_date" isEventTimestamp="true" isUnicode="false"/> -->
+		<!-- <Column name="level" pattern="%level" isUnicode="false"/> -->
+		<!-- <Column name="logger" pattern="%logger" isUnicode="false"/> -->
+		<!-- <Column name="message" pattern="%message" isUnicode="false" /> -->
+		<!-- <Column name="exception" pattern="%ex{full}" isUnicode="false" /> -->
+		<!-- </JDBC> -->
+		<!-- <JDBC name="mainhub" tableName="logs"> -->
+		<!-- <ConnectionFactory -->
+		<!-- class="me.charlesrod.Connection.DB" method="getConnection" /> -->
+		<!-- <Column name="ID" pattern="%u"/> -->
+		<!-- <Column name="entry_date" isEventTimestamp="true" /> -->
+		<!-- <Column name="level" pattern="%level" isUnicode="false" /> -->
+		<!-- <Column name="logger" pattern="%logger" isUnicode="false" /> -->
+		<!-- <Column name="message" pattern="%message" isUnicode="false" /> -->
+		<!-- <Column name="exception" pattern="%ex{full}" isUnicode="false"/> -->
+		<!-- </JDBC> -->
+<!-- 		<JPA name="mainhub" persistenceUnitName="logging" -->
+<!-- 			entityClassName="me.charlesrod.logging.Log" /> -->
+		<Console name="console" target="SYSTEM_OUT">
+			<PatternLayout
+				pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
+		</Console>
+
+		<File name="log_file" fileName="logs/app.log">
+			<PatternLayout
+				pattern="%d{yyyy-mm-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
+		</File>
+		<Async name="Async">
+			<AppenderRef ref="log_file" />
+<!-- 			<AppenderRef ref="mainhub" /> -->
+			<!-- <AppenderRef ref="postgresql" /> -->
+			<AppenderRef ref="console" />
+		</Async>
+	</appenders>
+
+	<loggers>
+		<root level="INFO">
+			<AppenderRef ref="Async" />
+			<!-- <appender-ref ref="console" level="info"/> -->
+			<!-- <appender-ref ref="log_file" level="error"/> -->
+		</root>
+		<!--<logger name="bank" level="TRACE"> -->
+		<!-- <AppenderRef ref="Async"></AppenderRef> -->
+		<!-- </logger> -->
+	</loggers>
+</configuration>
