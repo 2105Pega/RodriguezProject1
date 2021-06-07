@@ -74,4 +74,21 @@ public class ApplicationAccess {
 			}
 		}
 	}
+	public void updateApplication(int id, char s) {
+		Application app = ef.find(Application.class, id);
+		Account acc = app.getAcc();
+		if (app != null) {
+			try {
+				ef.getTransaction().begin();
+				app.setStatus(s);
+				char newStatus = statusConverter(s);
+				acc.setStatus(newStatus);
+				ef.merge(app);
+				ef.merge(acc);
+				ef.getTransaction().commit();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
 }

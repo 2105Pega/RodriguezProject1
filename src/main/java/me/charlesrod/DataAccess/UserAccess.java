@@ -82,6 +82,10 @@ public class UserAccess {
 			  e.printStackTrace();
 		  }
 	  }
+	  @SuppressWarnings("unchecked")
+	public List<User> getAll(){
+		  return ef.createQuery("from User").getResultList();
+	  }
 	  public boolean checkSession(String session) {
 		  User u;
 		  Query q = ef.createQuery("select u from User u where u.session = :sessionArg");

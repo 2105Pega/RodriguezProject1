@@ -79,7 +79,7 @@ public class LoginController extends Application{
 		SecretKey key = Keys.hmacShaKeyFor(signer.getBytes(StandardCharsets.UTF_8));
 		String jws = Jwts.builder()
 				.setSubject(username)
-				.claim("role",u.getRole().toString())
+				.claim("role",u.getRole().getTitle().toString())
 				.claim("user_id", u.getId())
 				.signWith(key)
 				.compact();

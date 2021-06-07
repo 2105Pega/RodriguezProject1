@@ -12,6 +12,7 @@ import javax.persistence.PersistenceContext;
 import org.jvnet.hk2.annotations.Service;
 
 import me.charlesrod.Models.Account;
+import me.charlesrod.Models.User;
 
 
 public class AccountAccess {
@@ -55,5 +56,37 @@ public class AccountAccess {
 			}
 		}
 	}
-
+	public void deposit(int id, double amount) {
+		Account acc = ef.find(Account.class, id);
+		UserAccess ua = new UserAccess(ef);
+		Account bank = ua.findByUsername("bank").get().getAccounts().stream().findFirst().get();
+		if (acc != null) {
+			ef.getTransaction().begin();
+			acc.deposit(amount);
+			ef.merge(acc);
+			TransactionAccess ta = new TransactionAccess(ef);
+			ta.addTransfer(bank, acc, amount);
+			ef.getTransaction().commit();
+		}
+	}
+	public void withdraw(int id, double amount) {
+		Account acc = ef.find(Account.class, id);
+		UserAccess ua = new UserAccess(ef);
+		Account bank = ua.findByUsername("bank").get().getAccounts().stream().findFirst().get();
+		if (acc != null) {
+			ef.getTransaction().begin();
+			acc.withdrawl(amount);
+			ef.merge(acc);
+			TransactionAccess ta = new TransactionAccess(ef);
+			ta.addTransfer(acc, bank, amount);
+			ef.getTransaction().commit();
+		}
+	}
+	public void updateAccount(int id,char status) {
+		Account acc = ef.find(Account.class, id);
+		ef.getTransaction().begin();
+		acc.setStatus(status);
+		ef.merge(acc);
+		ef.getTransaction().commit();
+	}
 }

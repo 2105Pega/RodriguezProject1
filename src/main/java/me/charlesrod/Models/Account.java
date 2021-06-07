@@ -26,6 +26,10 @@ import javax.persistence.Table;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -33,6 +37,9 @@ import lombok.ToString;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+@JsonIdentityInfo(
+		  generator = ObjectIdGenerators.PropertyGenerator.class, 
+		  property = "id")
 @Entity
 //@Embeddable
 @Table(name="account")
@@ -60,10 +67,12 @@ public class Account implements Serializable{
     private double balance = 0;
 	@Getter
 	@Setter
+	@JsonIgnore
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name="app_id",nullable=true,columnDefinition="integer")
     private Application app;
     @Setter
+    @JsonIgnore
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name="end_user_account", joinColumns=@JoinColumn(name="acc_id"),inverseJoinColumns=@JoinColumn(name="end_user_id"))
     private Set<User> customers = new HashSet<>();
@@ -86,12 +95,12 @@ public class Account implements Serializable{
     public Account(int id, Application app) {
     	this.id = id;
     	this.balance = app.getInitialAmount();
-    	this.customers = app.getCustomers();
+    	this.customers = new HashSet(app.getCustomers());
     	this.status = statusConverter(app.getStatus());
     }
     public Account(Application app) {
     	this.balance = app.getInitialAmount();
-    	this.customers = app.getCustomers();
+    	this.customers = new HashSet(app.getCustomers());
     	this.status = statusConverter(app.getStatus());
     	this.app = app;
     }
@@ -100,13 +109,13 @@ public class Account implements Serializable{
     	this.status = status;
     	this.balance = balance;
     	this.app = app;
-    	this.customers = app.getCustomers();
+    	this.customers = new HashSet(app.getCustomers());
     }
     public Account(char status, double balance, Application app) {
     	this.status = status;
     	this.balance = balance;
     	this.app = app;
-    	this.customers = app.getCustomers();
+    	this.customers = new HashSet(app.getCustomers());
     }
     public Account(int id, char status, double balance, User user) {
     	this.id = id;
@@ -134,6 +143,11 @@ public class Account implements Serializable{
 //    public Account(char status){
 //        this.status = status;
 //    }
+    public Set<User> getCustomers(){
+    	Set<User> copy = new HashSet<>();
+    	copy.addAll(this.customers);
+    	return copy;
+    }
     public void addUser(User user) {
     	customers.add(user);
     	user.getAccounts().add(this);

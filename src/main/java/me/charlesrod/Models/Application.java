@@ -22,10 +22,18 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+
+@JsonIdentityInfo(
+		  generator = ObjectIdGenerators.PropertyGenerator.class, 
+		  property = "id")
 //@Embeddable
 @Entity
 @Table(name="application")
@@ -60,6 +68,7 @@ public class Application implements Serializable{
     private char status = 'p';
     @Getter 
     @Setter
+    @JsonIgnore
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name="end_user_application", joinColumns=@JoinColumn(name="app_id"),inverseJoinColumns=@JoinColumn(name="end_user_id"))
     private Set<User> customers = new HashSet<User>();
