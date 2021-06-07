@@ -128,18 +128,18 @@ public class Account implements Serializable{
     	this.balance = balance;
     	this.customers.add(user);
     }
-//    public Account(int id, char status, double balance) {
-//    	this.id = id;
-//    	this.status = status;
-//    	this.balance = balance;
-//    }
+    public Account(int id, char status, double balance) {
+    	this.id = id;
+    	this.status = status;
+    	this.balance = balance;
+    }
 //    public Account(char status, double balance) {
 //    	this.status = status;
 //    	this.balance = balance;
 //    }
-//    public Account(double balance){
-//        this.balance = balance;
-//    }
+    public Account(double balance){
+        this.balance = balance;
+    }
 //    public Account(char status){
 //        this.status = status;
 //    }
