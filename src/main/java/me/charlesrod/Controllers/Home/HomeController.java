@@ -67,6 +67,7 @@ public class HomeController {
 		UserAccess ua = new UserAccess(ef);
 		User u;
 		try {
+			System.out.println(auth);
 			jws = Jwts.parserBuilder()
 					.setAllowedClockSkewSeconds(acceptableTimeScew)
 					.setSigningKey(key)
