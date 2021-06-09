@@ -9,13 +9,13 @@ import me.charlesrod.Models.Account;
 class Tests {
 
 	@Test
-	void onlySomeMoney() {
+	void failedWithdrawl() {
 		Account acc = new Account(50.00);
 		acc.withdrawl(80);
 		assertEquals(50, acc.getBalance());
 	}
 	@Test
-	void okHereyouGo() {
+	void successfullWithdrawl() {
 		Account acc = new Account(50.00);
 		acc.withdrawl(20);
 		assertEquals(30, acc.getBalance());

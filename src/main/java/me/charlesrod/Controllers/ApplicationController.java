@@ -43,7 +43,7 @@ import me.charlesrod.Models.User;
 
 @Path("/application")
 public class ApplicationController {
-	private static final Logger logr = LogManager.getLogger(AccountController.class);
+	private static final Logger logr = LogManager.getLogger(ApplicationController.class);
 	EntityManagerFactory eff = Persistence.createEntityManagerFactory("mainhub");
 	EntityManager ef = eff.createEntityManager();
 	Jws<Claims> jws;
